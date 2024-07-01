@@ -1,19 +1,26 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
+from pprint import pprint
 
 def fetch_images(query):
-    search_url = f"https://lexica.art/?q={query}"
+    search_url = f"https://lexica.art/api/v1/search?q={query}"
     response = requests.get(search_url)
-    soup = BeautifulSoup(response.content, "html.parser")
+
+    print(response.status_code)
+    data = response.json()
+    images = data['images']
     
-    # Use the correct class name identified in the HTML inspection
-    image_tags = soup.find_all("img", class_="pointer-events-none")  # class from lexica.art 
-    return image_urls
+    # grap 5 first images
+    img_urls = []
+    for i in range(5):
+        img_urls.append(images[i]['srcSmall'])
+
+    return img_urls
 
 
 # Streamlit app
-st.title("Image Search from Lexica.art")ß
+st.title("Image Search from Lexica.art")
 query = st.text_input("Enter search query:")
 
 if query:
