@@ -1,23 +1,19 @@
 import streamlit as st
 import requests
-from bs4 import BeautifulSoup
-from pprint import pprint
 
 def fetch_images(query):
     search_url = f"https://lexica.art/api/v1/search?q={query}"
     response = requests.get(search_url)
 
-    print(response.status_code)
-    data = response.json()
-    images = data['images']
-    
-    # grap 5 first images
-    img_urls = []
-    for i in range(5):
-        img_urls.append(images[i]['srcSmall'])
-
-    return img_urls
-
+    if response.status_code == 200:
+        data = response.json()
+        images = data['images']
+        
+        # Grab the first 4 images
+        img_urls = [images[i]['srcSmall'] for i in range(min(4, len(images)))]
+        return img_urls
+    else:
+        return []
 
 # Streamlit app
 st.title("Moodboard from Lexica.art")
@@ -28,12 +24,10 @@ if query:
     images = fetch_images(query)
     
     if images:
-        for img_url in images:
-            st.image(img_url)
+        # Create a 2x2 grid using columns
+        cols = st.columns(2)
+        
+        for i, img_url in enumerate(images):
+            cols[i % 2].image(img_url)
     else:
         st.write("No images found.")
-    
-    
-    
-    
-    
