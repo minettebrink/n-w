@@ -10,7 +10,15 @@ def fetch_images(query):
         images = data['images']
         
         # Grab the first 4 images
-        img_urls = [images[i]['srcSmall'] for i in range(min(4, len(images)))]
+        
+        i = 0
+        img_urls = []
+        while len(img_urls) < 4:
+            if images[i]['nsfw'] == False:
+                img_urls.append(images[i]['srcSmall'])
+            i += 1
+        
+        #print(img_urls)
         return img_urls
     else:
         return []
