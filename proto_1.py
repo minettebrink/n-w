@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import random
 
 def fetch_images(query):
     search_url = f"https://lexica.art/api/v1/search?q={query}"
@@ -9,17 +10,19 @@ def fetch_images(query):
         data = response.json()
         images = data['images']
         
-        # Grab the first 4 images
+        
         
         i = 0
         img_urls = []
-        while len(img_urls) < 4:
+        while len(img_urls) < 20:
             if images[i]['nsfw'] == False:
                 img_urls.append(images[i]['srcSmall'])
             i += 1
         
+        random_images = random.sample(img_urls, min(4, len(img_urls)))
+
         #print(img_urls)
-        return img_urls
+        return random_images
     else:
         return []
 
