@@ -42,3 +42,5 @@ if query:
             cols[i % 2].image(img_url)
     else:
         st.write("No images found.")
+
+        
