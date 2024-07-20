@@ -19,7 +19,7 @@ def fetch_images(query):
                 img_urls.append(images[i]['srcSmall'])
             i += 1
         
-        random_images = random.sample(img_urls, min(4, len(img_urls)))
+        random_images = random.sample(img_urls, min(6, len(img_urls)))
 
         #print(img_urls)
         return random_images
@@ -36,10 +36,10 @@ if query:
     
     if images:
         # Create a 2x2 grid using columns
-        cols = st.columns(2)
+        cols = st.columns(3)
         
         for i, img_url in enumerate(images):
-            cols[i % 2].image(img_url)
+            cols[i % 3].image(img_url)
     else:
         st.write("No images found.")
 
